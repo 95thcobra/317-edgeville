@@ -1,0 +1,231 @@
+- Fixed dc bug.
+- Updated start gear.
+- Fixed the bug where you can't shoot with blowpipe/crystal bow when dragon arrows are equipped.
+
+
+
+
+
+
+
+
+
+
+
+[25-7-2016]
+Enchanted bolt effects!
+
+Opal: 25% extra damage.
+[img]https://i.gyazo.com/8510abb35a12878dff89f7d797f8bbb8.gif[/img]
+
+Sapphire: Target loses 1/20th of his prayer points, attacker will receive half of that.
+[img]https://i.gyazo.com/7c062d001bff4abcd7417e64b6a5f539.gif[/img]
+
+Ruby: Damages the target for 20% of his hp, but also damages you for 10%.
+[img]https://i.gyazo.com/2f3843d2ff549c67c90ec2bc45bb36d1.gif[/img]
+
+Emerald: poison target(will be added once poisoning system is done).
+[img]https://i.gyazo.com/e460e1c0cdfb4844bc2c9b1239044bb0.gif[/img]
+
+Diamond: 15% higher max hit.
+[img]https://i.gyazo.com/e1a2687014d151409eb2b91787594230.gif[/img]
+
+Onyx: 20% extra damage and heals the player for 25% of damage dealt.
+[img]https://i.gyazo.com/bcb516d00d42c74e78e08d90474ea0dc.gif[/img]
+
+Dragon: 45% extra damage.
+[img]https://i.gyazo.com/1d0c5d32133dd1879006a2bdaf19df0a.gif[/img]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- Auto retaliate added!
+- Staff of the dead & toxic staff of the dead have reqs now.
+- Guthans effect added.
+
+
+
+
+
+
+
+
+
+
+Today's updates :)
+
+- Fixed a bug where you don't get the kill on death of enemy.
+- DFS timer is now reset on kill.
+- Vengeance timer is now reset on kill.
+- Combat level is now reset when loading a gear loadout.
+- Abyssal Bludgeon & special added.
+- Abyssal dagger stats have been added.
+- Magic accuracy buffed.
+- Crystal bow max hit fixed.
+- Added verac's effect.
+
+[img]https://i.gyazo.com/9d00340f7bf6564c41c91c0a1327902b.gif[/img]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- Vengeance requires 40 defence now.
+- Melee special attack accuracy improved.
+- New ranged accuracy formulas, less random and more based on stats now.
+- Improved range special hits.
+- Mage slightly buffed.
+
+
+
+
+
+- copy command now updates combat level too.
+- Fixed bug where you get hit after you teleported.
+- Add saradomin sword and blessed ss attack interface and animations.
+- Added logging in with email.
+- Granite maul special range fixed.
+- Leather body goes into right slot now.
+- Vengeance and DFS timer reset on death now.
+- Prayer orb not turning off after dying fixed.
+- Loadout saves skills too now.
+- Copy command added (Usage: copy playername).
+
+
+Today's updates!
+[17-07-2016]
+
+[17-07-2016]: Fixed running while being attacked, if the enemy is close enough he will hit you now.
+[17-07-2016]: Fixed draining prayer after death.
+[17-07-2016]: Fixed restoring hp after death.
+[17-07-2016]: Ranged specials are improved.
+[17-07-2016]: Fixed gmaul special on death.
+[17-07-2016]: Blowpipe added.
+[17-07-2016]: Vengeance runes now disappear on usage.
+[17-07-2016]: Melee accuracy nerfed once again.
+[17-07-2016]: Dharok's equipment requirement added.
+[17-07-2016]: Void equipment requirement added.
+[17-07-2016]: Re-arranging of inventory while banking is added!
+[17-07-2016]: Whip spec energy usage fixed.
+[17-07-2016]: DFS can't be used anymore after dying.
+[17-07-2016]: DFS has been nerfed slightly.
+
+
+
+
+
+
+[B][16-7-2016]: [/B]
+- Vengeance timer decreased to 30 secs.
+- On kill you will not have your stats un-boosted.
+- Kill/command logs added.
+- Chat logs added.
+- Ranging while frozen and out of distance is fixed.
+
+
+
+
+
+
+
+[07-07-2016]:Retribution added
+Smite added.
+Saradomin brew added.
+Super restore potion added.
+Zamorak brews added.
+Karambwans added.
+Added safe area (Edgeville bank)
+Add safe area timer
+
+
+
+
+
+
+[06-07-2016]: Add preset bank on first login.
+[06-07-2016]: Add ranged set.
+[06-07-2016]: Dragonfire shield activation added.
+[06-07-2016]: Quick prayers added (custom version)!
+[06-07-2016]: Auto casting added (custom version)!
+[06-07-2016]: Fix pjing.
+[06-07-2016]: Add all the correct base magic experienced for spells.
+[06-07-2016]: Defence autocasting now gives defence XP.
+[06-07-2016]: All combat styles now also give hitpoints experience.
+
+[B](de)activating of quick prayers.[/B]
+[IMG]https://gyazo.com/f442424b69f40f34b294d54e5892044b.gif[/IMG]
+
+[B]Quick prayers, made even quicker![/B]
+[IMG]https://i.gyazo.com/a4571af1227e28452659d4220ee412e7.gif[/IMG]
+
+[B]Convenient auto casting, last used spell will be used.[/B]
+[IMG]https://i.gyazo.com/4ae9e283c24bc4f7f6d9564712c7be5b.gif[/IMG]
+
+
+[IMG][/IMG]
+[IMG][/IMG]
+
+
+
+
+[B]Today's updates so far, more to come!
+[05-07-2016]:[/B]
+- Add regular mage damage spells.
+- Add prayer draining, deactivating of spells on 0.
+- Add prayer potion.
+- Add protection prayers.
+- Add prayer overhead icons.
+
+[SPOILER=Media][B]Strikes[/B]
+[IMG]https://i.gyazo.com/5c5d386e13598e96e05f3369bc7a9c0b.gif[/IMG]
+
+[B]Bolts[/B]
+[IMG]https://i.gyazo.com/509d39fcbfb6767e28a0c45d6c230deb.gif[/IMG]
+
+[B]Blasts[/B]
+[IMG]https://i.gyazo.com/15243f5ec36b770f5a4f05baa1282796.gif[/IMG]
+
+[B]Waves[/B]
+[IMG]https://i.gyazo.com/a8fdc9aafd898f96544781f4ef3263fd.gif[/IMG]
+
+[B]40% damage reduction[/B]
+[IMG]https://i.gyazo.com/30afb242c34e7cb0cd82c6a473211e8d.png[/IMG][/SPOILER]

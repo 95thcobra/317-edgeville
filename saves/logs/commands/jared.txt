@@ -1,0 +1,65 @@
+[Sun Jul 17 15:23:43 CEST 2016]:find blowpipe
+[Sun Jul 17 15:23:49 CEST 2016]:item 12926 1
+[Sun Jul 17 15:25:47 CEST 2016]:item 12924 5
+[Sun Jul 17 15:26:01 CEST 2016]:item 12926 5
+[Sun Jul 17 15:32:32 CEST 2016]:find blowpipe
+[Sun Jul 17 15:32:37 CEST 2016]:item 12924 5
+[Sun Jul 17 15:32:49 CEST 2016]:item 12926 5
+[Sun Jul 17 15:32:55 CEST 2016]:find dart
+[Sun Jul 17 15:33:01 CEST 2016]:item 11230 500
+[Sun Jul 17 15:42:17 CEST 2016]:find ava's
+[Sun Jul 17 15:42:22 CEST 2016]:item 10499 1
+[Sun Jul 17 15:42:29 CEST 2016]:find unholy
+[Sun Jul 17 15:42:34 CEST 2016]:item 3842 1
+[Sun Jul 17 15:44:06 CEST 2016]:find toxic staff
+[Sun Jul 17 15:44:12 CEST 2016]:item 12904 1
+[Sun Jul 17 15:44:17 CEST 2016]:find trident
+[Sun Jul 17 15:44:23 CEST 2016]:item 12899 1
+[Sun Jul 17 15:44:29 CEST 2016]:item 11907 1
+[Sun Jul 17 15:47:24 CEST 2016]:find ballista
+[Sun Jul 17 16:09:39 CEST 2016]:find bronze dart
+[Sun Jul 17 16:09:43 CEST 2016]:item 806 1
+[Sun Jul 17 16:10:53 CEST 2016]:find bronze dart
+[Sun Jul 17 16:10:58 CEST 2016]:item 806 500
+[Sun Jul 17 16:29:39 CEST 2016]:find dark bow
+[Sun Jul 17 16:29:48 CEST 2016]:item 11235 500
+[Sun Jul 17 16:29:52 CEST 2016]:find dragon arrow
+[Sun Jul 17 16:30:03 CEST 2016]:item 11212 1
+[Sun Jul 17 16:30:09 CEST 2016]:item 11212 500
+[Sun Jul 17 16:35:01 CEST 2016]:teletome sky
+[Sun Jul 17 16:35:19 CEST 2016]:teletome sky
+[Sun Jul 17 16:38:45 CEST 2016]:damageoff 
+[Sun Jul 17 16:41:01 CEST 2016]:damageoff 
+[Sun Jul 17 16:41:18 CEST 2016]:damageon 
+[Sun Jul 17 16:54:44 CEST 2016]:spec 
+[Sun Jul 17 16:56:46 CEST 2016]:spec 
+[Sun Jul 17 17:57:48 CEST 2016]:spec 
+[Sun Jul 17 17:59:10 CEST 2016]:spec 
+[Sun Jul 17 17:59:44 CEST 2016]:spec 
+[Sun Jul 17 18:20:51 CEST 2016]:spec 
+[Sun Jul 17 18:21:19 CEST 2016]:spec 
+[Sun Jul 17 18:21:27 CEST 2016]:spec 
+[Sun Jul 17 18:22:48 CEST 2016]:spec 
+[Sun Jul 17 18:23:01 CEST 2016]:spec 
+[Sun Jul 17 18:23:40 CEST 2016]:spec 
+[Sun Jul 17 18:24:00 CEST 2016]:spec 
+[Sun Jul 17 18:24:15 CEST 2016]:spec 
+[Sun Jul 17 18:24:40 CEST 2016]:spec 
+[Sun Jul 17 18:25:21 CEST 2016]:spec 
+[Sun Jul 17 18:26:48 CEST 2016]:spec 
+[Sun Jul 17 18:26:50 CEST 2016]:teletome sky
+[Sun Jul 17 18:27:09 CEST 2016]:spec 
+[Sun Jul 17 18:27:36 CEST 2016]:spec 
+[Sun Jul 17 18:27:57 CEST 2016]:spec 
+[Sun Jul 17 18:52:52 CEST 2016]:spec 
+[Mon Jul 18 12:06:49 CEST 2016]:find tok
+[Mon Jul 18 12:07:09 CEST 2016]:item 6526 1
+[Mon Jul 18 12:07:20 CEST 2016]:item 6522 1
+[Mon Jul 18 12:07:28 CEST 2016]:item 6522 5000
+[Mon Jul 18 12:11:15 CEST 2016]:debugon 
+[Mon Jul 18 12:13:30 CEST 2016]:damageoff 
+[Mon Jul 18 12:15:21 CEST 2016]:find magic short
+[Mon Jul 18 12:15:26 CEST 2016]:item 861 1
+[Mon Jul 18 12:15:32 CEST 2016]:item 861 1
+[Mon Jul 18 12:15:36 CEST 2016]:find rune arrow
+[Mon Jul 18 12:15:40 CEST 2016]:item 892 5000

@@ -1,0 +1,57 @@
+VPS INFO
+
+Het IPv4-adres van uw VPS: 51.254.222.10
+De naam van uw VPS: vps294645.ovh.net
+Het volgende administrator-account is geconfigureerd op de VPS:
+Gebruikersnaam: root
+Wachtwoord: do75Wh9E
+
+run server:
+cd edgeville
+
+killall screen
+screen -A -m -d -S rsps java -classpath bin:lib/* edgeville.GameServer
+
+java -classpath bin:lib/* edgeville.GameServer
+Show output: screen -R
+Detach screen: "Ctrl-A" and "d" 
+Kill screen: "Ctrl-A" and "K" 
+
+unzip file:
+unzip edgeville.zip
+
+go into folder:
+cd edgeville
+
+remove folder and content:
+rm -rf foldername
+
+shutdown server:
+killall java
+
+check if 64bit, if contains 'lm' then is 64 bit:
+grep flags /proj/cpuinfo
+
+install java:
+yum localinstall jdk-8u91-linux-x64.rpm
+
+install unzip:
+yum install unzip
+
+check ram:
+free -m
+
+open 43594 port:
+sudo iptables -I INPUT -p tcp --dport 43594 -j ACCEPT
+
+shutdown server:
+killall java
+
+Make all files 777
+chmod -R 777 dir
+chmod -R 777 .
+
+
+
+http://edgeville.org/game/updatehiscores.php?security=6Jsh689y&memberid=1&kills=59&deaths=96&timeplayed=203700
+

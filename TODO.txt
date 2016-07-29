@@ -1,0 +1,50 @@
+eating animation in combat.
+buff magic once agin.
+
+
+
+
+do75Wh9E
+
+
+
+FIX 2v1 BARRAGE ON SAME PERSON
+
+
+
+
+IMPORTANT, needs more testing...
+fix pjing
+fix 2v1ing
+^^^^^^^^^^^^^^^^^^
+
+zooming disable in banking.
+
+3rd age requirements
+range boot req
+3rd age reqs
+eternal boots req
+black dhide req
+65 def bonus for rune bandos should be 40
+
+
+------------------------------------------ NOT IMPORTANT FOR BETA -------------------------------------
+packetdecoder run energy
+equipment requirements
+
+shops
+
+clip custom objects
+unclip walls to be removed etc
+projectile clipping!
+
+resizable tabs switch block vs line
+
+toxic blowpipe
+staff of dead
+implement interface 100
+
+spirit shields effects
+
+
+
