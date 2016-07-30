@@ -63,4 +63,12 @@ public class Tile {
 	public String toString() {
 		return MoreObjects.toStringHelper(this).add("x", x).add("z", z).add("level", level).toString();
 	}
+	
+    public final int getRegionX() {
+        return (x >> 3) - 6;
+    }
+
+    public final int getRegionY() {
+        return (z >> 3) - 6;
+    }
 }

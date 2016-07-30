@@ -28,6 +28,7 @@ import edgeville.script.Timer;
 import edgeville.script.TimerKey;
 import edgeville.services.serializers.PlayerSerializer;
 import edgeville.stuff317.ISAACCipher;
+import edgeville.stuff317.UpdateFlags;
 import edgeville.util.CombatStyle;
 import edgeville.util.StaffData;
 import edgeville.util.TextUtil;
@@ -43,8 +44,10 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
@@ -108,10 +111,43 @@ public class Player extends Entity {
 	public boolean isVengOn() {
 		return vengOn;
 	}
+	
+    private final UpdateFlags flags = new UpdateFlags();
+    public final UpdateFlags getFlags() {
+        return flags;
+    }
 
 	public void setVengOn(boolean vengOn) {
 		this.vengOn = vengOn;
 	}
+	
+    /**
+     * Gets the hash collection of the local players.
+     *
+     * @return the local players.
+     */
+    public Set<Player> getLocalPlayers() {
+        return localPlayers;
+    }
+    /**
+     * The hash collection of the local players.
+     */
+    private final Set<Player> localPlayers = new LinkedHashSet<>(255);
+
+    /**
+     * The hash collection of the local npcs.
+     */
+    private final Set<Npc> localNpcs = new LinkedHashSet<>(255);
+
+    /**
+    /**
+     * Gets the hash collection of the local npcs.
+     *
+     * @return the local npcs.
+     */
+    public Set<Npc> getLocalNpcs() {
+        return localNpcs;
+    }
 
 	public String getIP() {
 		String address = channel.remoteAddress().toString();

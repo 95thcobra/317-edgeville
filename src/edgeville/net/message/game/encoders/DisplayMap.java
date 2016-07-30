@@ -13,13 +13,6 @@ import edgeville.util.map.MapDecryptionKeys;
  */
 public class DisplayMap implements Command { // Aka dipsleemap
 
-	private int x;
-	private int z;
-	private int localX;
-	private int localZ;
-	private int level;
-	private int[][] xteaKeys;
-
 	public DisplayMap(Player player) {
 		this(player, player.getTile(), true);
 	}
@@ -34,12 +27,6 @@ public class DisplayMap implements Command { // Aka dipsleemap
 		int botleft_x = (base_x - 6) * 8;
 		int botleft_z = (base_z - 6) * 8;
 
-		this.x = base_x;
-		this.z = base_z;
-		this.localX = x - botleft_x;
-		this.localZ = z - botleft_z;
-		level = tile.level;
-
 		// Update last map
 		if (setActive) {
 			player.activeMap(new Tile(botleft_x, botleft_z));
@@ -51,12 +38,17 @@ public class DisplayMap implements Command { // Aka dipsleemap
 		RSBuffer buf = new RSBuffer(player.channel().alloc().buffer(1 + 2 + 2));
 
 		buf.packet(73);
-
-		//buf.writeShortA(3333);
-		//buf.writeShort(3333);
 		
-		buf.writeShortA(100);
-		buf.writeShort(100);
+		Tile tile = player.getTile();
+		System.out.println(tile.getRegionX() + 6+":"+tile.getRegionY() + 6);
+		
+		buf.writeShortA(tile.getRegionX() + 6);
+		buf.writeShort(tile.getRegionY() + 6);
+		
+		//buf.writeShortA(386);
+		//buf.writeShort(405);
+		
+		
 
 		return buf;
 	}
