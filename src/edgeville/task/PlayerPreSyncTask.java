@@ -31,7 +31,7 @@ public class PlayerPreSyncTask implements Task {
 
 		// Send map if necessary
 		if (player.activeMap() == null) {
-			player.write(new DisplayMap(player));
+			//player.write(new DisplayMap(player));
 			player.world().syncMap(player, null);
 		} else {
 			Area prev = player.activeArea();

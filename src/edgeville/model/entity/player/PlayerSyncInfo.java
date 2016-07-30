@@ -109,34 +109,34 @@ public class PlayerSyncInfo extends SyncInfo {
 	}
 	
 	public void shout(String text) {
-    	shoutSet = new byte[text.length() + 1];
+    	/*shoutSet = new byte[text.length() + 1];
         RSBuffer buffer = new RSBuffer(Unpooled.wrappedBuffer(shoutSet));
         buffer.get().writerIndex(0);
         buffer.writeString(text);
-        addFlag(Flag.SHOUT.value);
+        addFlag(Flag.SHOUT.value);*/
 	}
 
 	public void animation(int id, int delay) {
-		RSBuffer buffer = new RSBuffer(Unpooled.wrappedBuffer(animationSet));
+		/*RSBuffer buffer = new RSBuffer(Unpooled.wrappedBuffer(animationSet));
 		buffer.get().writerIndex(0);
 		buffer.writeLEShort(id);
 		buffer.writeByteA(delay);
 
-		addFlag(Flag.ANIMATION.value);
+		addFlag(Flag.ANIMATION.value);*/
 	}
 
 	public void graphic(int id, int height, int delay) {
-		RSBuffer buffer = new RSBuffer(Unpooled.wrappedBuffer(graphicSet));
+		/*RSBuffer buffer = new RSBuffer(Unpooled.wrappedBuffer(graphicSet));
 		buffer.get().writerIndex(0);
 		buffer.writeShort(id);
 		buffer.writeLEInt(height << 16 | delay);
 
-		addFlag(Flag.GRAPHIC.value);
+		addFlag(Flag.GRAPHIC.value);*/
 	}
 
 	@Override
 	public void hit(int type, int value) {
-		if (hasFlag(Flag.HIT.value)) {
+		/*if (hasFlag(Flag.HIT.value)) {
 			RSBuffer buffer = new RSBuffer(Unpooled.wrappedBuffer(hitSet2));
 			buffer.get().writerIndex(0);
 			buffer.writeLEShortA(value);
@@ -154,31 +154,31 @@ public class PlayerSyncInfo extends SyncInfo {
 			buffer.writeByteA(entity.maxHp()); // max bar value
 
 			addFlag(Flag.HIT.value);
-		}
+		}*/
 	}
 
 	@Override
 	public void facetile(Tile tile) {
-		RSBuffer buffer = new RSBuffer(Unpooled.wrappedBuffer(facetile));
+		/*RSBuffer buffer = new RSBuffer(Unpooled.wrappedBuffer(facetile));
 		buffer.get().writerIndex(0);
 
 		buffer.writeLEShort(tile.x);
 		buffer.writeLEShort(tile.z);
 
-		addFlag(Flag.FACE_TILE.value);
+		addFlag(Flag.FACE_TILE.value);*/
 	}
 
 	@Override
 	public void faceEntity(Entity e) {
-		RSBuffer buffer = new RSBuffer(Unpooled.wrappedBuffer(faceEntitySet));
+		/*RSBuffer buffer = new RSBuffer(Unpooled.wrappedBuffer(faceEntitySet));
 		buffer.get().writerIndex(0);
 		buffer.writeLEShortA(e == null ? -1 : e.isNpc() ? e.index() : (e.index() + 32768));
 
-		addFlag(Flag.FACE_ENTITY.value);
+		addFlag(Flag.FACE_ENTITY.value);*/
 	}
 
 	public void forceMove(ForceMovement move) {
-		RSBuffer buffer = new RSBuffer(Unpooled.wrappedBuffer(forcemove));
+		/*RSBuffer buffer = new RSBuffer(Unpooled.wrappedBuffer(forcemove));
 		buffer.get().writerIndex(0);
 
 		buffer.writeByteA(move.dx1);
@@ -189,11 +189,11 @@ public class PlayerSyncInfo extends SyncInfo {
 		buffer.writeLEShortA(move.speed2);
 		buffer.writeByteA(move.direction);
 
-		addFlag(Flag.FORCE_MOVE.value);
+		addFlag(Flag.FORCE_MOVE.value);*/
 	}
 
 	public void publicChatMessage(ChatMessage message) {
-		RSBuffer buffer = new RSBuffer(Unpooled.buffer(256));
+		/*RSBuffer buffer = new RSBuffer(Unpooled.buffer(256));
 		buffer.get().writerIndex(0);
 		buffer.writeLEShortA((message.colors() << 8) | message.effects());
 		buffer.writeByteA(((Player)entity).getPrivilege().getIcon());// icon?
@@ -208,7 +208,7 @@ public class PlayerSyncInfo extends SyncInfo {
 
 		publicChatBlock = new byte[buffer.get().writerIndex()];
 		System.arraycopy(buffer.get().array(), 0, publicChatBlock, 0, publicChatBlock.length);
-		addFlag(Flag.CHAT.value);
+		addFlag(Flag.CHAT.value);*/
 	}
 
 	public byte[] looksBlock() {
@@ -260,8 +260,8 @@ public class PlayerSyncInfo extends SyncInfo {
 	}
 
 	public static enum Flag {
-		LOOKS(0x8),
-		ANIMATION(0x10),
+		LOOKS(0x10);
+		/*ANIMATION(0x10),
 		GRAPHIC(0x100),
 		HIT(0x40),
 		HIT2(0x200),
@@ -269,7 +269,7 @@ public class PlayerSyncInfo extends SyncInfo {
 		FACE_TILE(0x4),
 		CHAT(0x20),
 		FORCE_MOVE(0x400),
-		SHOUT(2);
+		SHOUT(2);*/
 
 		public int value;
 

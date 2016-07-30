@@ -123,11 +123,13 @@ public class LoginService implements Service {
 		player.write(new DisplayMap(player)); // This has to be the first
 												// packet!
 		player.world().syncMap(player, null);
-		player.interfaces().send(); // Must come after to set root pane; else
+		//player.interfaces().send(); // Must come after to set root pane; else
 									// crash =(
 		
 		System.out.println(message.getCtx().channel().remoteAddress());
 
+		System.out.println("Player has logged in!");
+		
 		player.pendingActions().add(new Action() {
 			public void decode(RSBuffer buf, ChannelHandlerContext ctx, int opcode, int size) {
 			}

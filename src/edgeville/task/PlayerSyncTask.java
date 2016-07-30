@@ -40,19 +40,49 @@ public class PlayerSyncTask implements Task {
 			for (Player player : players)
 				sync(player);
 		}
+		
+		private void updateFlags(Player player, RSBuffer buffer) {
+			if (player.sync().hasFlag(PlayerSyncInfo.Flag.LOOKS.value) || player.sync().isNewlyAdded(player.index()))
+				buffer.get().writeBytes(player.sync().looksBlock());
+		}
 
 		private void sync(Player player) {			
 			RSBuffer buffer = new RSBuffer(player.channel().alloc().buffer(512));
-			buffer.packet(79).writeSize(RSBuffer.SizeType.SHORT);
+			RSBuffer block = new RSBuffer(player.channel().alloc().buffer(512));
+			buffer.packet(81).writeSize(RSBuffer.SizeType.SHORT);
 
 			buffer.startBitMode();
-			encodeContextPlayer(player, buffer);
-			encodeSurroundings(player, buffer);
-			encodeMissing(player, buffer);
-			buffer.endBitMode();
+			updateMyPlayer(player, buffer);
+			
+			// update flags TODFO
+			//updateFlags(player, block);
+			/*
+			PlayerSyncInfo sync = (PlayerSyncInfo) player.sync();
+			for(int i = 0 ; i < sync.playerUpdateRequests().length; i++) {
+				if (i == player.index()) {
+					updateFlags(player, block);
+				}
+			}
+			*/
+			
+			updateOtherPlayers(player, buffer);
+			updatePlayerList(player, buffer);
+			
+			
+			//buffer.endBitMode();
+			
+			
+			if (block.get().writerIndex() > 0) {
+				buffer.writeBits(11, 2047);
+				buffer.endBitMode();
+				buffer.get().writeBytes(block.get());
+			} else {
+				buffer.endBitMode();
+			}
+			
 
 			// Update other masks
-			PlayerSyncInfo sync = (PlayerSyncInfo) player.sync();
+			/*PlayerSyncInfo sync = (PlayerSyncInfo) player.sync();
 			for (int i=0; i < sync.playerUpdateReqPtr(); i++) {
 				Player p = player.world().players().get(sync.playerUpdateRequests()[i]);
 
@@ -72,32 +102,14 @@ public class PlayerSyncTask implements Task {
 				if (mask >> 8 != 0)
 					buffer.writeByte(mask >> 8);
 				
-				if (pSync.hasFlag(PlayerSyncInfo.Flag.HIT.value))
-					buffer.get().writeBytes(pSync.hitSet());
-				if (pSync.hasFlag(PlayerSyncInfo.Flag.FACE_ENTITY.value))
-					buffer.get().writeBytes(pSync.faceEntitySet());
-				if (pSync.hasFlag(PlayerSyncInfo.Flag.GRAPHIC.value))
-					buffer.get().writeBytes(pSync.graphicSet());
-				if (pSync.hasFlag(PlayerSyncInfo.Flag.SHOUT.value))
-					buffer.get().writeBytes(pSync.shoutSet());
 				if (pSync.hasFlag(PlayerSyncInfo.Flag.LOOKS.value) || sync.isNewlyAdded(p.index()))//this
 					buffer.get().writeBytes(pSync.looksBlock());
-				if (pSync.hasFlag(PlayerSyncInfo.Flag.FORCE_MOVE.value))
-					buffer.get().writeBytes(pSync.forceMoveSet());
-				if (pSync.hasFlag(PlayerSyncInfo.Flag.FACE_TILE.value))
-					buffer.get().writeBytes(pSync.faceTileSet());
-				if (pSync.hasFlag(PlayerSyncInfo.Flag.CHAT.value))
-					buffer.get().writeBytes(pSync.chatMessageBlock());
-				if (pSync.hasFlag(PlayerSyncInfo.Flag.ANIMATION.value))
-					buffer.get().writeBytes(pSync.animationSet());
-				if (pSync.hasFlag(PlayerSyncInfo.Flag.HIT2.value))
-					buffer.get().writeBytes(pSync.hitSet2());
-			}
+			}*/
 
 			player.write(new UpdatePlayers(buffer));
 		}
 
-		private void encodeContextPlayer(Player player, RSBuffer buffer) {
+		private void updateMyPlayer(Player player, RSBuffer buffer) {
 			boolean needsUpdate = player.sync().dirty();
 
 			if (needsUpdate) {
@@ -148,7 +160,8 @@ public class PlayerSyncTask implements Task {
 			}
 		}
 
-		private void encodeSurroundings(Player player, RSBuffer buffer) {
+		private void updateOtherPlayers(Player player, RSBuffer buffer) {
+			//System.out.println(player.sync().localPlayerPtr());
 			buffer.writeBits(8, player.sync().localPlayerPtr()); // Local player count
 
 			int rebuiltptr = 0;
@@ -206,7 +219,7 @@ public class PlayerSyncTask implements Task {
 			player.sync().localPlayerPtr(rebuiltptr);
 		}
 
-		private void encodeMissing(Player player, RSBuffer buffer) {
+		private void updatePlayerList(Player player, RSBuffer buffer) {
 			int[] lp = player.sync().localPlayerIndices();
 			final int[] lpp = {player.sync().localPlayerPtr()};
 

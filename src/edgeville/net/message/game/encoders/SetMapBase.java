@@ -3,6 +3,7 @@ package edgeville.net.message.game.encoders;
 import edgeville.io.RSBuffer;
 import edgeville.model.Tile;
 import edgeville.model.entity.Player;
+import io.netty.buffer.Unpooled;
 
 /**
  * @author Simon on 8/18/2015.
@@ -35,11 +36,12 @@ public class SetMapBase implements Command {
 
 	@Override
 	public RSBuffer encode(Player player) {
-		RSBuffer buffer = new RSBuffer(player.channel().alloc().buffer(3)).packet(144);
-
-		buffer.writeByteA(z);
-		buffer.writeByte(x);
-
+		//RSBuffer buffer = new RSBuffer(player.channel().alloc().buffer(3)).packet(144);
+		//buffer.writeByteA(z);
+		//buffer.writeByte(x);
+		
+		RSBuffer buffer = new RSBuffer(Unpooled.buffer());
+				
 		return buffer;
 	}
 

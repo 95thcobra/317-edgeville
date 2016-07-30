@@ -526,12 +526,12 @@ public class Player extends Entity {
 	 * Sends everything required to make the user see the game.
 	 */
 	public void initiate() {
-		skills.update();
+		//skills.update();
 
 		// Send simple player options
 
-		write(new SetPlayerOption(2, false, "Follow"));
-		write(new SetPlayerOption(3, false, "Trade with"));
+		//write(new SetPlayerOption(2, false, "Follow"));
+		//write(new SetPlayerOption(3, false, "Trade with"));
 
 		// Trigger a scripting event
 		// world.server().scriptRepository().triggerLogin(this);
@@ -540,23 +540,23 @@ public class Player extends Entity {
 		// world.getPluginHandler().execute(this, LoginPlugin.class, new
 		// LoginPlugin());
 
-		varps.sync(1055);
+		//varps.sync(1055);
 
 		//updatePrivileges();
 
-		looks.update();
+		//looks.update();
 
 		// By default debug is on for admins
 		// putattrib(AttributeKey.DEBUG, false/*privilege == Privilege.ADMIN*/);
 
 		// Sync varps
-		varps.syncNonzero();
+		//varps.syncNonzero();
 
 		/////////// sj
 
 		// Welcome
-		message("Welcome to %s.", TextUtil.colorString(Constants.SERVER_NAME, Colors.BLUE));
-		messageFilterable("The server is in development stage.");
+		//message("Welcome to %s.", TextUtil.colorString(Constants.SERVER_NAME, Colors.BLUE));
+		//messageFilterable("The server is in development stage.");
 
 		// Start energy regenerate timer
 		timers().register(TimerKey.SPECIAL_ENERGY_RECHARGE, 50);
@@ -565,12 +565,12 @@ public class Player extends Entity {
 		timers().register(TimerKey.STAT_REPLENISH, 100);
 
 		// quest tab
-		questTab.prepareQuestTab();
+		//questTab.prepareQuestTab();
 
-		if (!receivedStarter)
-			giveStarterPack();
+		//if (!receivedStarter)
+		//	giveStarterPack();
 
-		onLogin();
+		//onLogin();
 	}
 
 	public void event(Event event) {
@@ -965,20 +965,7 @@ public class Player extends Entity {
 	}
 
 	private void handlePlayerOptions() {
-		if (Constants.ALL_PVP) {
-			if (!inSafeArea() || canBeAttackInSafeArea()) {
-				write(new SetPlayerOption(1, true, "Attack"));
-			} else {
-				write(new SetPlayerOption(1, true, "Null"));
-			}
-			return;
-		}
 
-		if (inWilderness()) {
-			write(new SetPlayerOption(1, true, "Attack"));
-		} else {
-			write(new SetPlayerOption(1, true, "Null"));
-		}
 	}
 
 	public boolean inWilderness() {
@@ -993,29 +980,7 @@ public class Player extends Entity {
 	}
 
 	public void precycle() {
-		// Sync inventory
-		if (inventory.dirty()) {
-			write(new SetItems(93, 149, 0, inventory));
-			inventory.clean();
-		}
-
-		// Sync equipment if dirty
-		if (equipment.dirty()) {
-			write(new SetItems(94, equipment));
-			looks.update();
-			equipment.clean();
-
-			// Also send the stuff required to make the weaponry panel proper
-			updateWeaponInterface();
-		}
-
-		// Sync bank if dirty
-		if (bank.isDirty()) {
-			List<Item> bankItems = bank.getBankItems();
-			if (bankItems.size() <= 800)
-				write(new SetItems(95, bankItems));
-			bank.clean();
-		}
+		
 	}
 
 	public boolean drainSpecialEnergy(int amount) {

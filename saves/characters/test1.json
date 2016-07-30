@@ -1,7 +1,7 @@
 {
   "username": "test1",
   "displayName": "test1",
-  "ip": "77.251.97.234",
+  "ip": "127.0.0.1",
   "password": "test",
   "receivedStarter": true,
   "tile": {
@@ -12,8 +12,8 @@
   "playTime": {
     "hours": 4,
     "minutes": 28,
-    "seconds": 45,
-    "milliseconds": 0,
+    "seconds": 46,
+    "milliseconds": 200,
     "color": "\u003ccol\u003dffffff\u003e"
   },
   "privilege": "DEVELOPER",
@@ -614,7 +614,7 @@
     },
     {
       "level": 99,
-      "xp": 1.3034448290000001E7
+      "xp": 1.3034448E7
     },
     {
       "level": 99,
@@ -626,7 +626,7 @@
     },
     {
       "level": 99,
-      "xp": 1.30345776E7
+      "xp": 1.3034577E7
     },
     {
       "level": 99,
@@ -710,5 +710,6 @@
   "blowpipeAmmo": {
     "id": 11230,
     "amount": 1124
-  }
+  },
+  "autoRetaliateEnabled": false
 }

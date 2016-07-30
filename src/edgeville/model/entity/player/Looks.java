@@ -82,15 +82,6 @@ public class Looks {
 		if (transmog >= 0) {
 			calcBuffer.writeShort(0xFFFF).writeShort(transmog);
 		} else {
-
-			// int[] looks = {0, 0, 0, 0, 18/*torso*/, 0, 27/*arms*/,
-			// 37/*legs*/, 8/*hair*/, 33/*hands*/, 42/*boots*/, 10/*beard*/};
-
-			// 6 = arms
-			// 8 = hair
-			// 9 = hands
-			// 10 = boots
-			// 11 = beard
 			EquipmentInfo equipInfo = player.world().equipmentInfo();
 
 			boolean hideHead = false;

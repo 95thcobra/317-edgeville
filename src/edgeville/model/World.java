@@ -137,7 +137,6 @@ public class World {
                         Npc npc = new Npc(sp.id, this, spawnTile, true);
                         npc.spawnDirection(sp.dir());
                         
-                        System.out.println(sp.radius + "FUCKLYOURADIUS");
                         npc.walkRadius(sp.radius);
                         registerNpc(npc);
 

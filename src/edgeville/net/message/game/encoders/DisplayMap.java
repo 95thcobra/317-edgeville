@@ -48,30 +48,15 @@ public class DisplayMap implements Command { // Aka dipsleemap
 
 	@Override
 	public RSBuffer encode(Player player) {
-		RSBuffer buf = new RSBuffer(player.channel().alloc().buffer(12 + 4 * 4 * 9));
+		RSBuffer buf = new RSBuffer(player.channel().alloc().buffer(1 + 2 + 2));
 
-		buf.packet(16).writeSize(RSBuffer.SizeType.SHORT);
+		buf.packet(73);
 
-		/* Calculate map keys needed */
-		List<int[]> keys = new LinkedList<>();
-		for (int rx = (x - (104 >> 4)) / 8; ((104 >> 4) + x) / 8 >= rx; rx++) {
-			for (int rz = (z - (104 >> 4)) / 8; ((104 >> 4) + z) / 8 >= rz; rz++) {
-				int mapid = rz + (rx << 8);
-				keys.add(MapDecryptionKeys.get(mapid));
-			}
-		}
-
-		for (int[] keyset : keys) {
-			for (int key : keyset) {
-				buf.writeIntV1(key);
-			}
-		}
-
-		buf.writeShort(z);
-		buf.writeShortA(x);
-		buf.writeLEShort(localZ);
-		buf.writeByteS(level);
-		buf.writeLEShortA(localX);
+		//buf.writeShortA(3333);
+		//buf.writeShort(3333);
+		
+		buf.writeShortA(100);
+		buf.writeShort(100);
 
 		return buf;
 	}

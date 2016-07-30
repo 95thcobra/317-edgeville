@@ -150,8 +150,8 @@ public abstract class Entity implements HitOrigin {
 	}
 
 	public void tryAnimate(int id) {
-		if (!sync.hasFlag(isPlayer() ? PlayerSyncInfo.Flag.ANIMATION.value : NpcSyncInfo.Flag.ANIMATION.value))
-			animate(id); // TODO all the block animations QQ
+		//if (!sync.hasFlag(isPlayer() ? PlayerSyncInfo.Flag.ANIMATION.value : NpcSyncInfo.Flag.ANIMATION.value))
+			//animate(id); // TODO all the block animations QQ
 	}
 
 	public void shout(String text) {
