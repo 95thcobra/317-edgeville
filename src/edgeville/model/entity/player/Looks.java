@@ -76,8 +76,8 @@ public class Looks {
 		calcBuffer.writerIndex(0); // Start at 0
 
 		calcBuffer.writeByte(gender.getId()); // Gender
-		calcBuffer.writeByte(player.getSkullHeadIcon()); // Skull
-		calcBuffer.writeByte(player.getPrayerHeadIcon()); // Prayer
+		calcBuffer.writeByte(player.getSkullIcon()); // Skull
+		calcBuffer.writeByte(player.getHeadIcon()); // Prayer
 
 		if (transmog >= 0) {
 			calcBuffer.writeShort(0xFFFF).writeShort(transmog);

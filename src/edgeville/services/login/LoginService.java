@@ -13,6 +13,7 @@ import edgeville.services.Service;
 import edgeville.services.serializers.JSONFileSerializer;
 import edgeville.services.serializers.PlayerSerializer;
 import edgeville.stuff317.LoginDetailsMessage;
+import edgeville.util.TextUtil;
 import io.netty.channel.ChannelHandlerContext;
 
 import org.apache.logging.log4j.LogManager;
@@ -113,6 +114,8 @@ public class LoginService implements Service {
 	}
 
 	public static void complete(Player player, LoginDetailsMessage message) {
+		
+		player.setUsernameHash(TextUtil.nameToHash(player.getUsername()));
 		
 		//player.interfaces().resizable(message.resizableInterfaces());
 		player.move(player.getTile());

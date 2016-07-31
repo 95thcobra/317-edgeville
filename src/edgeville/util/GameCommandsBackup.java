@@ -385,7 +385,7 @@ public final class GameCommandsBackup {
 		});
 
 		put(Privilege.ADMINISTRATOR, "skull", (p, args) -> {
-			p.setSkullHeadIcon(Integer.parseInt(args[0]));
+			p.setSkullIcon(Integer.parseInt(args[0]));
 		});
 		put(Privilege.ADMINISTRATOR, "prayer", (p, args) -> {
 			p.setPrayerHeadIcon(Integer.parseInt(args[0]));
@@ -394,7 +394,7 @@ public final class GameCommandsBackup {
 		put(Privilege.ADMINISTRATOR, "loopskulls", (p, args) -> {
 			new Thread(() -> {
 				for (int i = 0; i < 8; i++) {
-					p.setSkullHeadIcon(i);
+					p.setSkullIcon(i);
 					try {
 						Thread.sleep(300);
 					} catch (Exception e) {

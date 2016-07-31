@@ -343,6 +343,11 @@ public class ItemContainer {
 				return true;
 		return false;
 	}
+	
+	public int getId(int slot) {
+		Item item = items[slot];
+		return item == null ? -1 : item.getId();
+	}
 
 	public Item get(int slot) {
 		return items[slot];

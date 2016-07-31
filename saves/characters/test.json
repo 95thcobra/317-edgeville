@@ -11,9 +11,9 @@
   },
   "playTime": {
     "hours": 16,
-    "minutes": 31,
-    "seconds": 43,
-    "milliseconds": 200,
+    "minutes": 33,
+    "seconds": 46,
+    "milliseconds": 800,
     "color": "\u003ccol\u003dffffff\u003e"
   },
   "privilege": "DEVELOPER",
@@ -25,27 +25,27 @@
   "deaths": 30,
   "lastKilled": 0,
   "lastKilledAmount": 0,
-  "gender": "MALE",
+  "gender": "FEMALE",
   "looks": [
     0,
     0,
     0,
     0,
-    18,
+    89,
     0,
-    26,
-    36,
+    -22,
+    -25,
+    41,
     0,
-    33,
-    42,
-    117
+    7,
+    6
   ],
   "colors": [
+    -18,
+    31,
     0,
-    0,
-    0,
-    0,
-    0
+    -28,
+    7
   ],
   "inventory": [
     {

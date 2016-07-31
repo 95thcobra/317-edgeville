@@ -37,15 +37,13 @@ public final class PlayerUpdating {
 		out.newVarShortMessage(81);
 		out.startBitAccess();
 
-		
 		// My player updating
 		PlayerUpdating.updateLocalPlayerMovement(player, out);
-		
+
 		// Flags
 		if (player.getFlags().needsUpdate())
 			PlayerUpdating.updateState(player, player, block, false, true);
-		
-		
+
 		// Other players updating
 		out.putBits(8, player.getLocalPlayers().size());
 		for (Iterator<Player> i = player.getLocalPlayers().iterator(); i.hasNext();) {
@@ -61,8 +59,7 @@ public final class PlayerUpdating {
 				i.remove();
 			}
 		}
-		
-		
+
 		// Update player list
 		int added = 0;
 		for (Player other : World.getPlayers()) {
@@ -78,9 +75,7 @@ public final class PlayerUpdating {
 				}
 			}
 		}
-		
-		
-		
+
 		if (block.buffer().writerIndex() > 0) {
 			out.putBits(11, 2047);
 			out.endBitAccess();
@@ -153,11 +148,11 @@ public final class PlayerUpdating {
 				block.put(0);
 			}
 			if (player.getEquipment().getId(Equipment.CHEST_SLOT) > 1) {
-				if (!player.getEquipment().get(Equipment.CHEST_SLOT).getDefinition().isPlatebody()) {
+				//if (!player.getEquipment().get(Equipment.CHEST_SLOT).getDefinition().isPlatebody()) {
 					block.putShort(0x100 + appearance.getArms());
-				} else {
-					block.put(0);
-				}
+				//} else {
+				//	block.put(0);
+				//}
 			} else {
 				block.putShort(0x100 + appearance.getArms());
 			}
@@ -166,8 +161,9 @@ public final class PlayerUpdating {
 			} else {
 				block.putShort(0x100 + appearance.getLegs());
 			}
-			if (player.getEquipment().getId(Equipment.HEAD_SLOT) > 1 && player.getEquipment().get(Equipment.HEAD_SLOT).getDefinition().isFullHelm()) {
-				block.put(0);
+			//if (player.getEquipment().getId(Equipment.HEAD_SLOT) > 1 && player.getEquipment().get(Equipment.HEAD_SLOT).getDefinition().isFullHelm()) {
+				if (player.getEquipment().getId(Equipment.HEAD_SLOT) > 1) {
+						block.put(0);
 			} else {
 				block.putShort(0x100 + appearance.getHead());
 			}
@@ -182,7 +178,8 @@ public final class PlayerUpdating {
 				block.putShort(0x100 + appearance.getFeet());
 			}
 			if (appearance.isMale()) {
-				if (player.getEquipment().getId(Equipment.HEAD_SLOT) > 1 && !player.getEquipment().get(Equipment.HEAD_SLOT).getDefinition().isFullHelm() || player.getEquipment().free(Equipment.HEAD_SLOT)) {
+				//if (player.getEquipment().getId(Equipment.HEAD_SLOT) > 1 && !player.getEquipment().get(Equipment.HEAD_SLOT).getDefinition().isFullHelm() || player.getEquipment().free(Equipment.HEAD_SLOT)) {
+				if (player.getEquipment().getId(Equipment.HEAD_SLOT) > 1) {
 					block.putShort(0x100 + appearance.getBeard());
 				} else {
 					block.put(0);

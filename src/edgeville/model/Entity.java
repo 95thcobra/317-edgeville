@@ -527,7 +527,7 @@ public abstract class Entity implements HitOrigin {
 
 			((Player) origin).sound(((Entity) origin).getAttackSound());
 			if (this instanceof Player) {
-				((Player) origin).setSkullHeadIcon(Skulls.WHITE_SKUL.getSkullId());
+				((Player) origin).setSkullIcon(Skulls.WHITE_SKUL.getSkullId());
 				((Player) origin).timers().extendOrRegister(TimerKey.SKULL, 2000); // 20
 
 				if (((Player) origin).getPrayer().isPrayerOn(Prayers.SMITE)) {

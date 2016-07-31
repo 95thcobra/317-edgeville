@@ -255,7 +255,7 @@ public class JSONFileSerializer extends PlayerSerializer {
 
 			// Skull head icon
 			JsonElement skullIcon = rootObject.get("skullIcon");
-			player.setSkullHeadIcon(skullIcon.getAsInt());
+			player.setSkullIcon(skullIcon.getAsInt());
 
 			// Prayer head icon
 			JsonElement prayerIcon = rootObject.get("prayerIcon");
@@ -325,8 +325,8 @@ public class JSONFileSerializer extends PlayerSerializer {
 		jsonObject.add("playTime", gson.toJsonTree(player.getPlayTime()));
 		jsonObject.add("privilege", gson.toJsonTree(player.getPrivilege()));
 		jsonObject.addProperty("migration", player.migration());
-		jsonObject.addProperty("skullIcon", player.getSkullHeadIcon());
-		jsonObject.addProperty("prayerIcon", player.getPrayerHeadIcon());
+		jsonObject.addProperty("skullIcon", player.getSkullIcon());
+		jsonObject.addProperty("prayerIcon", player.getHeadIcon());
 		jsonObject.addProperty("debug", player.isDebug());
 		jsonObject.addProperty("kills", player.getKills());
 		jsonObject.addProperty("deaths", player.getDeaths());

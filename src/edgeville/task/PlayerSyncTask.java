@@ -10,10 +10,15 @@ import edgeville.model.entity.Player;
 import edgeville.model.entity.SyncInfo;
 import edgeville.model.entity.player.PlayerSyncInfo;
 import edgeville.net.message.game.encoders.UpdatePlayers;
+import edgeville.stuff317.Appearance;
 import edgeville.stuff317.BitMask;
 import edgeville.stuff317.ByteOrder;
+import edgeville.stuff317.Equipment;
 import edgeville.stuff317.Flag;
 import edgeville.stuff317.MessageBuilder;
+import edgeville.stuff317.ValueType;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -44,124 +49,193 @@ public class PlayerSyncTask implements Task {
 			for (Player player : players)
 				sync(player);
 		}
-		
-		private void updateFlags(Player player, RSBuffer buffer) {
-			if (player.sync().hasFlag(PlayerSyncInfo.Flag.LOOKS.value) || player.sync().isNewlyAdded(player.index()))
-				buffer.get().writeBytes(player.sync().looksBlock());
-		}
 
-		private void sync(Player player) {			
-			RSBuffer buffer = new RSBuffer(player.channel().alloc().buffer(512));
-			//RSBuffer block = new RSBuffer(player.channel().alloc().buffer(512));
-			MessageBuilder block = MessageBuilder.create(8192);
-			buffer.packet(81).writeSize(RSBuffer.SizeType.SHORT);
-
-			buffer.startBitMode();
-			updateMyPlayer(player, buffer);
-			
-			if (player.sync().dirty()) {
-				//updateState(player, player, block, false, true);
-			}
-			
-			updateOtherPlayers(player, buffer);
-			updatePlayerList(player, buffer);
-			
-			
-			//buffer.endBitMode();
-			
-			
-			if (block.buffer().writerIndex() > 0) {
-				buffer.writeBits(11, 2047);
-				buffer.endBitMode();
-				buffer.get().writeBytes(block.buffer());
-			} else {
-				buffer.endBitMode();
-			}
-			
-			player.write(new UpdatePlayers(buffer));
-		}
-		
 		private static void updateState(Player player, Player thisPlayer, MessageBuilder block, boolean forceAppearance, boolean noChat) {
-			if (!player.sync().dirty() && !forceAppearance)
+			if (!player.getFlags().needsUpdate() && !forceAppearance)
 				return;
-			/*if (player.getCachedUpdateBlock() != null && !player.equals(thisPlayer) && !forceAppearance && !noChat) {
-				block.putBytes(player.getCachedUpdateBlock());
-				return;
-			}*/
+
 			MessageBuilder cachedBuffer = MessageBuilder.create(300);
 			BitMask mask = new BitMask();
 
-			if (player.getFlags().get(Flag.FORCED_MOVEMENT)) {
-				mask.set(0x400);
-			}
-			if (player.getFlags().get(Flag.GRAPHICS)) {
-				mask.set(0x100);
-			}
-			if (player.getFlags().get(Flag.ANIMATION)) {
-				mask.set(8);
-			}
-			if (player.getFlags().get(Flag.FORCED_CHAT)) {
-				mask.set(4);
-			}
-			if (player.getFlags().get(Flag.CHAT) && !noChat) {
-				mask.set(0x80);
-			}
 			if (player.getFlags().get(Flag.APPEARANCE) || forceAppearance) {
 				mask.set(0x10);
 			}
-			if (player.getFlags().get(Flag.FACE_CHARACTER)) {
-				mask.set(1);
-			}
-			if (player.getFlags().get(Flag.FACE_COORDINATE)) {
-				mask.set(2);
-			}
-			if (player.getFlags().get(Flag.HIT)) {
-				mask.set(0x20);
-			}
-			if (player.getFlags().get(Flag.HIT_2)) {
-				mask.set(0x200);
-			}
+
 			if (mask.get() >= 0x100) {
+				System.out.println("noo got in heeees");
 				mask.set(0x40);
 				cachedBuffer.putShort(mask.get(), ByteOrder.LITTLE);
 			} else {
 				cachedBuffer.put(mask.get());
 			}
 
-			if (player.getFlags().get(Flag.FORCED_MOVEMENT)) {
-				// appendForcedMovement(player, cachedBuffer);
-			}
-			/*if (player.getFlags().get(Flag.GRAPHICS)) {
-				appendGraphic(player, cachedBuffer);
-			}
-			if (player.getFlags().get(Flag.ANIMATION)) {
-				appendAnimation(player, cachedBuffer);
-			}
-			if (player.getFlags().get(Flag.FORCED_CHAT)) {
-				appendForcedChat(player, cachedBuffer);
-			}
-			if (player.getFlags().get(Flag.CHAT) && !noChat) {
-				appendChat(player, cachedBuffer);
-			}
-			if (player.getFlags().get(Flag.FACE_CHARACTER)) {
-				appendFaceCharacter(player, cachedBuffer);
-			}
 			if (player.getFlags().get(Flag.APPEARANCE) || forceAppearance) {
 				appendAppearance(player, cachedBuffer);
 			}
-			if (player.getFlags().get(Flag.FACE_COORDINATE)) {
-				appendFaceCoordinates(player, cachedBuffer);
-			}
-			if (player.getFlags().get(Flag.HIT)) {
-				appendPrimaryHit(player, cachedBuffer);
-			}
-			if (player.getFlags().get(Flag.HIT_2)) {
-				appendSecondaryHit(player, cachedBuffer);
-			}
-			if (!player.equals(thisPlayer) && !forceAppearance && !noChat) {
-				player.setCachedUpdateBlock(cachedBuffer.buffer());
-			}*/
 			block.putBytes(cachedBuffer.buffer());
+		}
+
+		private static void appendAppearance(Player player, MessageBuilder out) {
+			Appearance appearance = player.getAppearance();
+			MessageBuilder block = MessageBuilder.create(128);
+			block.put(1);
+			block.put(player.getHeadIcon());
+			block.put(player.getSkullIcon());
+			if (player.getPlayerNpc() == -1) {
+				if (player.getEquipment().getId(Equipment.HEAD_SLOT) > 1) {
+					block.putShort(0x200 + player.getEquipment().getId(Equipment.HEAD_SLOT));
+				} else {
+					block.put(0);
+				}
+				if (player.getEquipment().getId(Equipment.CAPE_SLOT) > 1) {
+					block.putShort(0x200 + player.getEquipment().getId(Equipment.CAPE_SLOT));
+				} else {
+					block.put(0);
+				}
+				if (player.getEquipment().getId(Equipment.AMULET_SLOT) > 1) {
+					block.putShort(0x200 + player.getEquipment().getId(Equipment.AMULET_SLOT));
+				} else {
+					block.put(0);
+				}
+				if (player.getEquipment().getId(Equipment.WEAPON_SLOT) > 1) {
+					block.putShort(0x200 + player.getEquipment().getId(Equipment.WEAPON_SLOT));
+				} else {
+					block.put(0);
+				}
+				if (player.getEquipment().getId(Equipment.CHEST_SLOT) > 1) {
+					block.putShort(0x200 + player.getEquipment().getId(Equipment.CHEST_SLOT));
+				} else {
+					block.putShort(0x100 + appearance.getChest());
+				}
+				if (player.getEquipment().getId(Equipment.SHIELD_SLOT) > 1) {
+					block.putShort(0x200 + player.getEquipment().getId(Equipment.SHIELD_SLOT));
+				} else {
+					block.put(0);
+				}
+				if (player.getEquipment().getId(Equipment.CHEST_SLOT) > 1) {
+						block.putShort(0x100 + appearance.getArms());
+				} else {
+					block.putShort(0x100 + appearance.getArms());
+				}
+				if (player.getEquipment().getId(Equipment.LEGS_SLOT) > 1) {
+					block.putShort(0x200 + player.getEquipment().getId(Equipment.LEGS_SLOT));
+				} else {
+					block.putShort(0x100 + appearance.getLegs());
+				}
+				if (player.getEquipment().getId(Equipment.HEAD_SLOT) > 1) {
+					block.put(0);
+				} else {
+					block.putShort(0x100 + appearance.getHead());
+				}
+				if (player.getEquipment().getId(Equipment.HANDS_SLOT) > 1) {
+					block.putShort(0x200 + player.getEquipment().getId(Equipment.HANDS_SLOT));
+				} else {
+					block.putShort(0x100 + appearance.getHands());
+				}
+				if (player.getEquipment().getId(Equipment.FEET_SLOT) > 1) {
+					block.putShort(0x200 + player.getEquipment().getId(Equipment.FEET_SLOT));
+				} else {
+					block.putShort(0x100 + appearance.getFeet());
+				}
+				if (appearance.isMale()) {
+					if (player.getEquipment().getId(Equipment.HEAD_SLOT) > 1) {
+						block.putShort(0x100 + appearance.getBeard());
+					} else {
+						block.put(0);
+					}
+				} else {
+					block.put(0);
+				}
+			} else {
+				block.putShort(-1);
+				block.putShort(player.getPlayerNpc());
+			}
+			block.put(appearance.getHairColor());
+			block.put(appearance.getTorsoColor());
+			block.put(appearance.getLegColor());
+			block.put(appearance.getFeetColor());
+			block.put(appearance.getSkinColor());
+
+			block.putShort(0x328);
+			block.putShort(0x337);
+			block.putShort(0x333);
+			block.putShort(0x334);
+			block.putShort(0x335);
+			block.putShort(0x336);
+			block.putShort(0x338);
+			
+			block.putLong(player.getUsernameHash()); // wtf?
+			block.put(player.skills().combatLevel());//combat level
+			block.putShort(0);
+
+			out.put(block.buffer().writerIndex(), ValueType.C);
+			out.putBytes(block.buffer());
+		}
+
+		private void sync(Player player) {
+			RSBuffer buffer = new RSBuffer(player.channel().alloc().buffer(512));
+			buffer.packet(81).writeSize(RSBuffer.SizeType.SHORT);
+
+			buffer.startBitMode();
+
+			MessageBuilder block = MessageBuilder.create(8192);
+			updateMyPlayer(player, buffer);
+
+			if (player.getFlags().needsUpdate()) {
+				updateState(player, player, block, false, true);
+			}
+
+			updateOtherPlayers(player, buffer); 
+			updateList(player, buffer); // is this the problem?
+
+			//System.out.println(block.buffer().readableBytes());		
+			
+			/*if (block.buffer().writerIndex() > 0) {
+				buffer.writeBits(11, 2047);
+				buffer.endBitMode();
+				buffer.get().writeBytes(block.buffer());
+			} else {
+				buffer.endBitMode();
+			}*/
+			buffer.endBitMode();
+			
+			// THIS NEEDS TO BE REDONE. THIS IS THE PROBLEM
+			// Update masks
+						/*PlayerSyncInfo sync = (PlayerSyncInfo) player.sync();
+						for (int i=0; i < sync.playerUpdateReqPtr(); i++) {
+							
+							System.out.println("got in  mask: " + i);
+							
+							Player p = player.world().players().get(sync.playerUpdateRequests()[i]);
+
+							if (p == null) {
+								logger.warn("THIS SHOULD NOT HAPPEN!");
+								buffer.writeByte(0);
+								continue;
+							}
+
+							PlayerSyncInfo pSync = (PlayerSyncInfo) p.sync();
+							int mask = pSync.calculatedFlag() | (sync.isNewlyAdded(p.index()) ? PlayerSyncInfo.Flag.LOOKS.value : 0);
+							if (mask >> 8 != 0) {
+								mask |= 0x80;
+							}
+
+							buffer.writeByte(mask);
+							if (mask >> 8 != 0)
+								buffer.writeByte(mask >> 8);
+							
+							if (pSync.hasFlag(PlayerSyncInfo.Flag.LOOKS.value) || sync.isNewlyAdded(p.index()))//this
+								buffer.get().writeBytes(pSync.looksBlock());
+
+						}*/
+			
+		if (block.buffer().writerIndex() > 0) {
+			buffer.get().writeBytes(block.buffer());
+		}
+		
+		player.getFlags().reset();
+		
+			player.write(new UpdatePlayers(buffer));
 		}
 
 		private void updateMyPlayer(Player player, RSBuffer buffer) {
@@ -181,11 +255,11 @@ public class PlayerSyncTask implements Task {
 					int dx = player.getTile().x - mapx;
 					int dz = player.getTile().z - mapz;
 
-					buffer.writeBits(7, dz);
-					buffer.writeBits(1, 1); // Reset tile queue
-					buffer.writeBits(7, dx);
-					buffer.writeBits(1, player.sync().calculatedFlag() != 0 ? 1 : 0);
 					buffer.writeBits(2, player.getTile().level);
+					buffer.writeBits(1, 1); // Reset tile queue
+					buffer.writeBits(1, player.sync().calculatedFlag() != 0 ? 1 : 0);
+					buffer.writeBits(7, dx);
+					buffer.writeBits(7, dz);
 
 					if (player.sync().calculatedFlag() != 0) {
 						player.sync().playerUpdateRequests()[player.sync().playerUpdateReqPtr()] = player.index();
@@ -196,8 +270,9 @@ public class PlayerSyncTask implements Task {
 					buffer.writeBits(2, run ? 2 : 1); // Step up your game
 
 					buffer.writeBits(3, primaryStep);
-					if (run)
+					if (run) {
 						buffer.writeBits(3, secondaryStep);
+					}
 
 					buffer.writeBits(1, player.sync().calculatedFlag() != 0 ? 1 : 0);
 
@@ -216,11 +291,10 @@ public class PlayerSyncTask implements Task {
 		}
 
 		private void updateOtherPlayers(Player player, RSBuffer buffer) {
-			//System.out.println(player.sync().localPlayerPtr());
 			buffer.writeBits(8, player.sync().localPlayerPtr()); // Local player count
 
 			int rebuiltptr = 0;
-			for (int i=0; i<player.sync().localPlayerPtr(); i++) {
+			for (int i = 0; i < player.sync().localPlayerPtr(); i++) {
 				int index = player.sync().localPlayerIndices()[i];
 				Player p = player.world().players().get(index);
 
@@ -274,9 +348,9 @@ public class PlayerSyncTask implements Task {
 			player.sync().localPlayerPtr(rebuiltptr);
 		}
 
-		private void updatePlayerList(Player player, RSBuffer buffer) {
+		private void updateList(Player player, RSBuffer buffer) {
 			int[] lp = player.sync().localPlayerIndices();
-			final int[] lpp = {player.sync().localPlayerPtr()};
+			final int[] lpp = { player.sync().localPlayerPtr() };
 
 			for (int idx = 0; idx < 2048; idx++) {
 				Player p = player.world().players().get(idx);
@@ -289,11 +363,11 @@ public class PlayerSyncTask implements Task {
 				}
 
 				buffer.writeBits(11, p.index());
-				buffer.writeBits(5, p.getTile().z - player.getTile().z);
-				buffer.writeBits(5, p.getTile().x - player.getTile().x);
-				buffer.writeBits(3, 6); // Direction to face
 				buffer.writeBits(1, 1); // Clear tile queue
 				buffer.writeBits(1, 1); // Update
+				buffer.writeBits(3, 6); // Direction to face
+				buffer.writeBits(5, p.getTile().z - player.getTile().z);
+				buffer.writeBits(5, p.getTile().x - player.getTile().x);
 
 				PlayerSyncInfo sync = player.sync();
 				sync.playerUpdateRequests()[sync.playerUpdateReqPtr()] = p.index();
@@ -304,8 +378,11 @@ public class PlayerSyncTask implements Task {
 				lp[lpp[0]++] = p.index();
 			}
 
-			if (player.sync().playerUpdateReqPtr() > 0)
-				buffer.writeBits(11, -1); // No more adding
+			
+			 if (player.sync().playerUpdateReqPtr() > 0) {
+			  buffer.writeBits(11, -1); 
+			  }
+			 
 
 			player.sync().localPlayerPtr(lpp[0]);
 		}

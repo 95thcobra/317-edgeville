@@ -27,6 +27,8 @@ import edgeville.net.message.game.encoders.*;
 import edgeville.script.Timer;
 import edgeville.script.TimerKey;
 import edgeville.services.serializers.PlayerSerializer;
+import edgeville.stuff317.Appearance;
+import edgeville.stuff317.Flag;
 import edgeville.stuff317.ISAACCipher;
 import edgeville.stuff317.UpdateFlags;
 import edgeville.util.CombatStyle;
@@ -83,6 +85,49 @@ public class Player extends Entity {
 
 	private Item blowpipeAmmo;
 
+	private int playerNpc = -1;
+
+	/**
+	 * Gets the player-npc identifier for updating.
+	 *
+	 * @return the player npc identifier.
+	 */
+	public int getPlayerNpc() {
+		return playerNpc;
+	}
+
+	/**
+	 * The username hash for this player.
+	 */
+	private long usernameHash;
+	/**
+	 * Gets the username hash for this player.
+	 *
+	 * @return the username hash.
+	 */
+	public long getUsernameHash() {
+		return usernameHash;
+	}
+
+	/**
+	 * Sets the value for {@link Player#usernameHash}.
+	 *
+	 * @param usernameHash
+	 *            the new value to set.
+	 */
+	public void setUsernameHash(long usernameHash) {
+		this.usernameHash = usernameHash;
+	}
+
+	/**
+	 * Sets the value for {@link Player#playerNpc}.
+	 *
+	 * @param playerNpc
+	 *            the new value to set.
+	 */
+	public void setPlayerNpc(int playerNpc) {
+		this.playerNpc = playerNpc;
+	}
 	/**
 	 * The privilege level of this player.
 	 */
@@ -148,7 +193,19 @@ public class Player extends Entity {
     public Set<Npc> getLocalNpcs() {
         return localNpcs;
     }
-
+    
+	/**
+	 * The container of appearance values for this player.
+	 */
+	private final Appearance appearance = new Appearance();
+	/**
+	 * Gets the container of appearance values for this player.
+	 *
+	 * @return the container of appearance values.
+	 */
+	public Appearance getAppearance() {
+		return appearance;
+	}
 	public String getIP() {
 		String address = channel.remoteAddress().toString();
 		address = address.replace("/", "");
@@ -276,24 +333,24 @@ public class Player extends Entity {
 	 */
 	private IsaacRand outrand;
 
-	private int skullHeadIcon = -1;
-	private int prayerHeadIcon = -1;
+	private int skullIcon = -1;
+	private int headIcon = -1;
 
-	public int getSkullHeadIcon() {
-		return skullHeadIcon;
+	public int getSkullIcon() {
+		return skullIcon;
 	}
 
-	public void setSkullHeadIcon(int skullHeadIcon) {
-		this.skullHeadIcon = skullHeadIcon;
+	public void setSkullIcon(int skullIcon) {
+		this.skullIcon = skullIcon;
 		looks().update();
 	}
 
-	public int getPrayerHeadIcon() {
-		return prayerHeadIcon;
+	public int getHeadIcon() {
+		return headIcon;
 	}
 
 	public void setPrayerHeadIcon(int prayerHeadIcon) {
-		this.prayerHeadIcon = prayerHeadIcon;
+		this.headIcon = prayerHeadIcon;
 		looks().update();
 	}
 
@@ -395,6 +452,7 @@ public class Player extends Entity {
 		// this.privilege = privilege;
 
 		this.sync = new PlayerSyncInfo(this);
+		getFlags().set(Flag.APPEARANCE);
 		this.skills = new Skills(this);
 		this.looks = new Looks(this);
 
@@ -949,8 +1007,8 @@ public class Player extends Entity {
 					timers.register(TimerKey.SPECIAL_ENERGY_RECHARGE, 50);
 					break;
 				case SKULL:
-					if (getSkullHeadIcon() == Skulls.WHITE_SKUL.getSkullId()) {
-						setSkullHeadIcon(-1);
+					if (getSkullIcon() == Skulls.WHITE_SKUL.getSkullId()) {
+						setSkullIcon(-1);
 					}
 					break;
 				case STAT_REPLENISH:
