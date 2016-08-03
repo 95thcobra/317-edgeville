@@ -3,9 +3,14 @@ package edgeville.task;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+
 import edgeville.model.World;
+import edgeville.stuff317.inputmessage.InputMessage;
+import edgeville.stuff317.inputmessage.InputMessageListener;
+import edgeville.stuff317.inputmessage.NetworkConstants;
 
 import java.util.Collection;
+import java.util.Queue;
 
 /**
  * @author Simon on 8/23/2014.
@@ -27,9 +32,23 @@ public class PacketProcessingTask implements Task {
 					logger.error("Caused by: ", e);
 				}
 			});
+			
+			player.messageQueue().forEach(packet -> {
+				InputMessage msg;
+		        while ((msg = player.messageQueue().poll()) != null) {
+		            try {
+		                InputMessageListener listener = NetworkConstants.MESSAGES[msg.getOpcode()];
+		                listener.handleMessage(player, msg.getOpcode(), msg.getSize(), msg.getPayload());
+		            } catch (Exception e) {
+		                e.printStackTrace();
+		            }
+		        }
+			});
 
 			// Remove actions
 			player.pendingActions().clear();
+			
+			player.messageQueue().clear();
 		});
 	}
 

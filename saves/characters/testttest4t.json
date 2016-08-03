@@ -1,6 +1,6 @@
 {
-  "username": "est1",
-  "displayName": "est1",
+  "username": "testttest4t",
+  "displayName": "testttest4t",
   "ip": "127.0.0.1",
   "password": "test",
   "receivedStarter": false,
@@ -12,8 +12,8 @@
   "playTime": {
     "hours": 0,
     "minutes": 0,
-    "seconds": 1,
-    "milliseconds": 200,
+    "seconds": 2,
+    "milliseconds": 400,
     "color": "\u003ccol\u003dffffff\u003e"
   },
   "migration": 0,

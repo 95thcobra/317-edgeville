@@ -85,7 +85,7 @@ public class LoginHandler extends ChannelInboundHandlerAdapter {
 
 			ISAACCipher encryptor = message.getEncryptor();
 			ISAACCipher decryptor = message.getDecryptor();
-
+			
 			Player player = new Player(message.getCtx().channel(), message.getUsername(), message.getPassword(), server.world(), Locations.SPAWN_LOCATION.getTile(), encryptor, decryptor);
 			player.id(player.getUsername());
 			LoginService.complete(player, message);

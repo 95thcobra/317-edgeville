@@ -16,6 +16,9 @@ import edgeville.net.codec.pregame.HandshakeResponseEncoder;
 import edgeville.net.codec.pregame.Js5DataEncoder;
 import edgeville.net.codec.pregame.PreGameDecoder;
 import edgeville.net.codec.pregame.PregameLoginEncoder;
+import edgeville.stuff317.ISAACCipher;
+import edgeville.stuff317.LoginDetailsMessage;
+import edgeville.stuff317.inputmessage.MessageDecoder;
 
 /**
  * @author Simon on 8/4/2014.
@@ -64,12 +67,13 @@ public class ClientInitializer extends ChannelInitializer<Channel> {
 		channel.pipeline().addLast(trafficHandler, new PreGameDecoder(), new Js5DataEncoder(), new HandshakeResponseEncoder(), new PregameLoginEncoder(), js5Handler, loginHandler, handler);
 	}
 
-	public void initForGame(Channel channel) {
+	public void initForGame(LoginDetailsMessage message) {
+		Channel channel = message.channel();
 		while (channel.pipeline().last() != null) {
 			channel.pipeline().removeLast();
 		}
 
-		channel.pipeline().addLast(new ReadTimeoutHandler(30, TimeUnit.SECONDS), trafficHandler, commandEncoder, new ActionDecoder(), handler);
+		channel.pipeline().addLast(new ReadTimeoutHandler(30, TimeUnit.SECONDS), trafficHandler, commandEncoder, new ActionDecoder()/*new MessageDecoder(message.getDecryptor())*/, handler);
 	}
 
 	public TrafficCounter trafficStats() {

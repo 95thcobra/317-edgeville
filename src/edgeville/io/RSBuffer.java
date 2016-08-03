@@ -71,6 +71,10 @@ public class RSBuffer {
 	public byte readByteS() {
 		return (byte) (128 - backing.readByte());
 	}
+	
+	public byte readByteC() {
+		return readByteN();
+	}
 
 	public short readUByteS() {
 		return (short) (128 - backing.readUnsignedByte());
@@ -238,6 +242,14 @@ public class RSBuffer {
 			str = "";
 
 		backing.writeBytes(str.getBytes()).writeByte(0);
+		return this;
+	}
+	
+	public RSBuffer writeString317(String str) {
+		for(byte value : str.getBytes()) {
+			writeByte(value);
+		}
+		writeByte(10);
 		return this;
 	}
 

@@ -24,7 +24,7 @@ public class SetVarp implements Command {
 //System.out.println("varp set: id:" + id +" value:"+value + " small:"+small);
 		
 		RSBuffer buffer = new RSBuffer(player.channel().alloc().buffer(small ? 4 : 7));
-		buffer.packet(small ? 190 : 47);
+		/*buffer.packet(small ? 190 : 47);
 
 		if (small) {
 			buffer.writeByteS(value);
@@ -32,7 +32,7 @@ public class SetVarp implements Command {
 		} else {
 			buffer.writeLEShortA(id);
 			buffer.writeLEInt(value);
-		}
+		}*/
 
 		return buffer;
 	}

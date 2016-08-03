@@ -22,6 +22,7 @@ import edgeville.util.UsernameUtilities;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -130,9 +131,11 @@ public class PreGameDecoder extends ByteToMessageDecoder {
 			long serverHalf = rsaBuffer.readLong();
 			int[] isaacSeed = { (int) (clientHalf >> 32), (int) clientHalf, (int) (serverHalf >> 32), (int) serverHalf };
 			decryptor = new ISAACCipher(isaacSeed);
+			System.out.println("decryptor:"+Arrays.toString(isaacSeed));
 			for (int i = 0; i < isaacSeed.length; i++)
 				isaacSeed[i] += 50;
 			encryptor = new ISAACCipher(isaacSeed);
+			System.out.println("encryptor:"+Arrays.toString(isaacSeed));
 			rsaBuffer.readInt();
 			
 			MessageBuilder db = MessageBuilder.create(rsaBuffer);
@@ -149,19 +152,13 @@ public class PreGameDecoder extends ByteToMessageDecoder {
 			encryptor = new ISAACCipher(isaacSeed);
 			
 			int magic2 = in.readInt();
-			System.out.println("Magic2: " + magic2);
 			
 			MessageBuilder db = MessageBuilder.create(in);
 			username = db.getString().toLowerCase().replaceAll("_", " ").trim();
 			password = db.getString().toLowerCase();
 		}
-		
-		// password = BufferUtilities.readString(in);
-		// username = BufferUtilities.readString(in);
-		
+
 		System.out.println("Login: " + username + ","+password);
-		
         return new LoginDetailsMessage(ctx, username, password, encryptor, decryptor);
-		//return new LoginRequestMessage(ctx.channel(), username, password, isaacSeed, new int[4], revision, new byte[24], false);
 	}
 }

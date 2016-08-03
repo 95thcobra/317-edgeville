@@ -32,8 +32,7 @@ public class CommandEncoder extends MessageToByteEncoder<Command> {
 			out.writeBytes(buffer.get());
 		}
 
-		buffer.get().release();
-			
+		buffer.get().release();	
 		System.out.println("MESSAGE SENT: "+ buffer.packet());
 	}
 	

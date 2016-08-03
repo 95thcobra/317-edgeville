@@ -24,12 +24,13 @@ public class AddMessage implements Command {
 	@Override public RSBuffer encode(Player player) {
 		//player.message("addmessage sent: text:"+text + " type:"+type.name());
 		
-		RSBuffer buffer = new RSBuffer(player.channel().alloc().buffer(1 + 1 + text.length() + 1));
-		buffer.packet(78).writeSize(RSBuffer.SizeType.BYTE);
+		RSBuffer buffer = new RSBuffer(player.channel().alloc().buffer(text.length() + 1));
+		buffer.packet(/*78*/253).writeSize(RSBuffer.SizeType.BYTE);
 
-		buffer.writeCompact(type.id);
-		buffer.writeByte(0);
-		buffer.writeString(text);
+		//buffer.writeCompact(type.id);
+		//buffer.writeByte(0);
+		//buffer.writeString(text);
+		buffer.writeString317(text);
 		return buffer;
 	}
 

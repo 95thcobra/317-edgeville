@@ -1,18 +1,18 @@
 {
-  "username": "abaaoomaoa",
-  "displayName": "abaaoomaoa",
+  "username": "testt",
+  "displayName": "testt",
   "ip": "127.0.0.1",
   "password": "test",
   "receivedStarter": false,
   "tile": {
-    "x": 3097,
-    "z": 3499,
+    "x": 3099,
+    "z": 3495,
     "level": 0
   },
   "playTime": {
     "hours": 0,
     "minutes": 0,
-    "seconds": 30,
+    "seconds": 3,
     "milliseconds": 600,
     "color": "\u003ccol\u003dffffff\u003e"
   },

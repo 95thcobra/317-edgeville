@@ -1,19 +1,19 @@
 {
-  "username": "testtewa",
-  "displayName": "testtewa",
+  "username": "gewag",
+  "displayName": "gewag",
   "ip": "127.0.0.1",
-  "password": "test",
+  "password": "gewa",
   "receivedStarter": false,
   "tile": {
-    "x": 3097,
-    "z": 3499,
+    "x": 3099,
+    "z": 3495,
     "level": 0
   },
   "playTime": {
     "hours": 0,
     "minutes": 0,
-    "seconds": 1,
-    "milliseconds": 200,
+    "seconds": 5,
+    "milliseconds": 400,
     "color": "\u003ccol\u003dffffff\u003e"
   },
   "migration": 0,

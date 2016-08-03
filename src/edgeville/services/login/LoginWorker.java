@@ -65,7 +65,7 @@ public class LoginWorker implements Runnable {
 					
 					
 					// Convert pipeline
-					service.server().initializer().initForGame(message.channel());
+					service.server().initializer().initForGame(message);
 
 					// Was the result faulty?
 					if (result != PlayerLoadResult.OK) {

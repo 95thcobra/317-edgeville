@@ -1,8 +1,8 @@
 {
-  "username": "lol1",
-  "displayName": "lol1",
+  "username": "testt3ttest",
+  "displayName": "testt3ttest",
   "ip": "127.0.0.1",
-  "password": "lol1",
+  "password": "test",
   "receivedStarter": false,
   "tile": {
     "x": 3097,
@@ -12,7 +12,7 @@
   "playTime": {
     "hours": 0,
     "minutes": 0,
-    "seconds": 22,
+    "seconds": 28,
     "milliseconds": 800,
     "color": "\u003ccol\u003dffffff\u003e"
   },

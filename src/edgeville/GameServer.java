@@ -8,6 +8,8 @@ import edgeville.plugin.PluginHandler;
 import edgeville.services.Service;
 import edgeville.services.login.LoginService;
 import edgeville.services.serializers.JSONFileSerializer;
+import edgeville.stuff317.inputmessage.MessageOpcodeLoader;
+import edgeville.stuff317.inputmessage.MessageSizeLoader;
 import edgeville.util.HuffmanCodec;
 import edgeville.util.map.MapDecryptionKeys;
 import io.netty.bootstrap.ServerBootstrap;
@@ -50,7 +52,8 @@ public class GameServer {
 	private ServerBootstrap bootstrap;
 
 	/**
-	 * The {@link edgeville.net.ClientInitializer} which sets the initial pipeline of the new connections.
+	 * The {@link edgeville.net.ClientInitializer} which sets the initial
+	 * pipeline of the new connections.
 	 */
 	private ClientInitializer connectionInitializer;
 
@@ -60,8 +63,9 @@ public class GameServer {
 	private final World world;
 
 	/**
-	 * The 'heart' of our server, better known as the thread that lives once per 600 milliseconds.
-	 * Every 600ms, this thread 'pulses' and does all the logic.
+	 * The 'heart' of our server, better known as the thread that lives once per
+	 * 600 milliseconds. Every 600ms, this thread 'pulses' and does all the
+	 * logic.
 	 */
 	private ServerProcessor processor;
 
@@ -76,14 +80,16 @@ public class GameServer {
 	private UIDProvider uidProvider;
 
 	/**
-	 * The Huffman codec instance we use to encode and decode chat, to save bytes.
+	 * The Huffman codec instance we use to encode and decode chat, to save
+	 * bytes.
 	 */
 	private HuffmanCodec huffman;
 
 	/**
 	 * Creates a new server instance from the passed configuration.
 	 *
-	 * @param config The configuration to load settings from.
+	 * @param config
+	 *            The configuration to load settings from.
 	 */
 	public GameServer(File store) throws Exception {
 		if (!store.exists()) {
@@ -108,7 +114,7 @@ public class GameServer {
 
 		// Start the engine
 		processor = new ServerProcessor(this);
-	
+
 		// Construct bootstrap
 		EventLoopGroup acceptGroup = new NioEventLoopGroup(Constants.ACCEPT_THREADS);
 		EventLoopGroup ioGroup = new NioEventLoopGroup(Constants.IO_THREADS);
@@ -130,8 +136,9 @@ public class GameServer {
 	}
 
 	/**
-	 * Shut down the server in a graceful method. This will first terminate the Netty server (if any is active),
-	 * and then terminate the 600ms logic thread in a graceful manner.
+	 * Shut down the server in a graceful method. This will first terminate the
+	 * Netty server (if any is active), and then terminate the 600ms logic
+	 * thread in a graceful manner.
 	 */
 	public void shutdown() {
 		if (bootstrap != null) {
@@ -146,74 +153,75 @@ public class GameServer {
 	/**
 	 * Attack the JS scripting context to the calling thread
 	 */
-	/*public void loadScripts() throws IOException {
-		logger.log(Level.INFO, "Loading scripts...");
-		scriptExecutor = new ScriptExecutor();
-		scriptRepository = new ScriptRepository(scriptExecutor);
-		scriptRepository.load();
-	}*/
+	/*
+	 * public void loadScripts() throws IOException { logger.log(Level.INFO,
+	 * "Loading scripts..."); scriptExecutor = new ScriptExecutor();
+	 * scriptRepository = new ScriptRepository(scriptExecutor);
+	 * scriptRepository.load(); }
+	 */
 
-	/*public void loadGroovyPlugins() {
-		logger.log(Level.INFO, "Loading groovy plugins...");
-		World.getPluginHandler().init();
-	}*/
+	/*
+	 * public void loadGroovyPlugins() { logger.log(Level.INFO,
+	 * "Loading groovy plugins..."); World.getPluginHandler().init(); }
+	 */
 
 	/**
-	 * Instantiate and setup any services that are provided through the configuration file.
+	 * Instantiate and setup any services that are provided through the
+	 * configuration file.
 	 */
 	private void setupServices() {
-		/*ConfigList serviceDefinitions = config.getList("services");
+		/*
+		 * ConfigList serviceDefinitions = config.getList("services");
+		 * 
+		 * for (ConfigValue serv : serviceDefinitions) { Class<? extends
+		 * Service> serviceClass = null; Config object = ((ConfigObject)
+		 * serv).toConfig();
+		 * 
+		 * logger.info("Loading service '{}'...", object.getString("class"));
+		 * 
+		 * // Try to resolve it try { serviceClass =
+		 * Class.forName(object.getString("class")).asSubclass(Service.class); }
+		 * catch (ClassNotFoundException e) { logger.error(
+		 * "Cannot find service class '{}'.", object.getString("class")); }
+		 * catch (ClassCastException e) { logger.error(
+		 * "Unable to cast '{}' to subtype of Service.",
+		 * object.getString("class")); }
+		 * 
+		 * // Have we found the class? Try to add it to our list. if
+		 * (serviceClass != null) { try { Service service =
+		 * serviceClass.newInstance(); service.setup(this, object);
+		 * services.add(service);
+		 * 
+		 * logger.info("Loaded service '{}'.",
+		 * service.getClass().getSimpleName()); } catch (Exception e) {
+		 * logger.error("Unable to instantiate '{}'.",
+		 * object.getString("class"), e); } } }
+		 * 
+		 * // Start all the services we loaded services.forEach(Service::start);
+		 */
 
-		for (ConfigValue serv : serviceDefinitions) {
-			Class<? extends Service> serviceClass = null;
-			Config object = ((ConfigObject) serv).toConfig();
-
-			logger.info("Loading service '{}'...", object.getString("class"));
-
-			// Try to resolve it
-			try {
-				serviceClass = Class.forName(object.getString("class")).asSubclass(Service.class);
-			} catch (ClassNotFoundException e) {
-				logger.error("Cannot find service class '{}'.", object.getString("class"));
-			} catch (ClassCastException e) {
-				logger.error("Unable to cast '{}' to subtype of Service.", object.getString("class"));
-			}
-
-			// Have we found the class? Try to add it to our list.
-			if (serviceClass != null) {
-				try {
-					Service service = serviceClass.newInstance();
-					service.setup(this, object);
-					services.add(service);
-
-					logger.info("Loaded service '{}'.", service.getClass().getSimpleName());
-				} catch (Exception e) {
-					logger.error("Unable to instantiate '{}'.", object.getString("class"), e);
-				}
-			}
-		}
-
-		// Start all the services we loaded
-		services.forEach(Service::start);*/
-		
 		Service loginService = new LoginService();
-		loginService.setup(this/*, object*/);
+		loginService.setup(this/* , object */);
 		services.add(loginService);
-		
+
 		logger.info("Loaded service: {}", loginService.getClass().getName());
-		
+
 		Service jsonService = new JSONFileSerializer(uidProvider);
 		jsonService.setup(this);
 		services.add(jsonService);
-		
+
 		logger.info("Loaded service: {}", jsonService.getClass().getName());
 
 		// Start all the services we loaded
 		services.forEach(Service::start);
+
+		new MessageOpcodeLoader().load();
+		new MessageSizeLoader().load();
 	}
 
 	/**
-	 * Attempts to set up a UID provider as configured in the json configuration file.
+	 * Attempts to set up a UID provider as configured in the json configuration
+	 * file.
 	 */
 	private void setupUIDProvider() {
 		uidProvider = new SimpleUIDProvider(this);
@@ -233,9 +241,12 @@ public class GameServer {
 	/**
 	 * Finds a service based on its type.
 	 *
-	 * @param serviceType The class of the service to look for. The class must be a subclass of Service.
+	 * @param serviceType
+	 *            The class of the service to look for. The class must be a
+	 *            subclass of Service.
 	 * @param allowSubclass
-	 * @return An optional holding either nothing if there was no such service active, or with the service.
+	 * @return An optional holding either nothing if there was no such service
+	 *         active, or with the service.
 	 */
 	@SuppressWarnings("unchecked")
 	public <T extends Service> Optional<T> service(Class<? extends T> serviceType, boolean allowSubclass) {
@@ -247,10 +258,13 @@ public class GameServer {
 	}
 
 	/**
-	 * Tries to resolve a service by its type, and checks if the service is alive and running properly.
+	 * Tries to resolve a service by its type, and checks if the service is
+	 * alive and running properly.
 	 *
-	 * @param serviceType The class of the service to check.
-	 * @return <code>true</code> if the service both exists and is alive, <code>false</code> if not.
+	 * @param serviceType
+	 *            The class of the service to check.
+	 * @return <code>true</code> if the service both exists and is alive,
+	 *         <code>false</code> if not.
 	 */
 	public boolean serviceAlive(Class<? extends Service> serviceType) {
 		Optional<Service> s = service(serviceType, false);
@@ -283,11 +297,11 @@ public class GameServer {
 
 	public static void main(String[] args) {
 		logger.info("Starting server...");
-		
+
 		try {
 			//Config c = ConfigFactory.parseFile(new File("server.conf"));
 			//new GameServer(c, new File(c.getString("server.filestore"))).start();
-			new GameServer(/*c, */new File("./data/filestore")).start();
+			new GameServer(/* c, */new File("./data/filestore")).start();
 		} catch (Exception e) {
 			logger.fatal("Server has died unexpectedly", e);
 		}

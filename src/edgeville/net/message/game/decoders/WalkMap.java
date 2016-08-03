@@ -37,6 +37,7 @@ public class WalkMap implements Action {
 
 	@Override
 	public void process(Player player) {
+		System.out.println("LMAOOOO");
 		// Mode 2 is ctrl-shift clicking, teleporting to the tile.
 		if (mode == 2 && player.getPrivilege().eligibleTo(Privilege.ADMINISTRATOR)) {
 			player.move(x, z, player.getTile().level);

@@ -30,7 +30,11 @@ import edgeville.services.serializers.PlayerSerializer;
 import edgeville.stuff317.Appearance;
 import edgeville.stuff317.Flag;
 import edgeville.stuff317.ISAACCipher;
+import edgeville.stuff317.MessageBuilder;
 import edgeville.stuff317.UpdateFlags;
+import edgeville.stuff317.inputmessage.InputMessage;
+import edgeville.stuff317.inputmessage.InputMessageListener;
+import edgeville.stuff317.inputmessage.NetworkConstants;
 import edgeville.util.CombatStyle;
 import edgeville.util.StaffData;
 import edgeville.util.TextUtil;
@@ -49,6 +53,7 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -100,6 +105,7 @@ public class Player extends Entity {
 	 * The username hash for this player.
 	 */
 	private long usernameHash;
+
 	/**
 	 * Gets the username hash for this player.
 	 *
@@ -128,6 +134,7 @@ public class Player extends Entity {
 	public void setPlayerNpc(int playerNpc) {
 		this.playerNpc = playerNpc;
 	}
+
 	/**
 	 * The privilege level of this player.
 	 */
@@ -156,48 +163,50 @@ public class Player extends Entity {
 	public boolean isVengOn() {
 		return vengOn;
 	}
-	
-    private final UpdateFlags flags = new UpdateFlags();
-    public final UpdateFlags getFlags() {
-        return flags;
-    }
+
+	private final UpdateFlags flags = new UpdateFlags();
+
+	public final UpdateFlags getFlags() {
+		return flags;
+	}
 
 	public void setVengOn(boolean vengOn) {
 		this.vengOn = vengOn;
 	}
-	
-    /**
-     * Gets the hash collection of the local players.
-     *
-     * @return the local players.
-     */
-    public Set<Player> getLocalPlayers() {
-        return localPlayers;
-    }
-    /**
-     * The hash collection of the local players.
-     */
-    private final Set<Player> localPlayers = new LinkedHashSet<>(255);
 
-    /**
-     * The hash collection of the local npcs.
-     */
-    private final Set<Npc> localNpcs = new LinkedHashSet<>(255);
+	/**
+	 * Gets the hash collection of the local players.
+	 *
+	 * @return the local players.
+	 */
+	public Set<Player> getLocalPlayers() {
+		return localPlayers;
+	}
 
-    /**
-    /**
-     * Gets the hash collection of the local npcs.
-     *
-     * @return the local npcs.
-     */
-    public Set<Npc> getLocalNpcs() {
-        return localNpcs;
-    }
-    
+	/**
+	 * The hash collection of the local players.
+	 */
+	private final Set<Player> localPlayers = new LinkedHashSet<>(255);
+
+	/**
+	 * The hash collection of the local npcs.
+	 */
+	private final Set<Npc> localNpcs = new LinkedHashSet<>(255);
+
+	/**
+	 * /** Gets the hash collection of the local npcs.
+	 *
+	 * @return the local npcs.
+	 */
+	public Set<Npc> getLocalNpcs() {
+		return localNpcs;
+	}
+
 	/**
 	 * The container of appearance values for this player.
 	 */
 	private final Appearance appearance = new Appearance();
+
 	/**
 	 * Gets the container of appearance values for this player.
 	 *
@@ -206,6 +215,7 @@ public class Player extends Entity {
 	public Appearance getAppearance() {
 		return appearance;
 	}
+
 	public String getIP() {
 		String address = channel.remoteAddress().toString();
 		address = address.replace("/", "");
@@ -368,6 +378,11 @@ public class Player extends Entity {
 	 * A list of pending actions which are decoded at the next game cycle.
 	 */
 	private ConcurrentLinkedQueue<Action> pendingActions = new ConcurrentLinkedQueue<Action>();
+	
+    /**
+     * The queue of messages that will be handled on the next sequence.
+     */
+    private final Queue<InputMessage> messageQueue = new ConcurrentLinkedQueue<>();
 
 	private ItemContainer inventory;
 	private ItemContainer equipment;
@@ -429,10 +444,10 @@ public class Player extends Entity {
 	public void setAutoCasting(boolean isAutoCasting) {
 		this.isAutoCasting = isAutoCasting;
 	}
-	
+
 	private ISAACCipher encryptor;
 	private ISAACCipher decryptor;
-	
+
 	public ISAACCipher getEncryptor() {
 		return encryptor;
 	}
@@ -700,7 +715,7 @@ public class Player extends Entity {
 	}
 
 	public void message(String format, Object... params) {
-		write(new AddMessage(params.length > 0 ? String.format(format, (Object[]) params) : format));
+		write(new AddMessage(params.length > 0 ? String.format(format, (Object[]) params) : format, AddMessage.Type.GAME));
 	}
 
 	public void stopActionsWithoutRemovingMainInterface(boolean cancelMoving) {
@@ -762,6 +777,10 @@ public class Player extends Entity {
 	public ConcurrentLinkedQueue<Action> pendingActions() {
 		return pendingActions;
 	}
+	
+	public Queue<InputMessage> messageQueue() {
+		return messageQueue;
+	}
 
 	public Looks looks() {
 		return looks;
@@ -791,13 +810,11 @@ public class Player extends Entity {
 		return activeArea().contains(new Tile(x, z));
 	}
 
-	/*public IsaacRand inrand() {
-		return inrand;
-	}
-
-	public IsaacRand outrand() {
-		return outrand;
-	}*/
+	/*
+	 * public IsaacRand inrand() { return inrand; }
+	 * 
+	 * public IsaacRand outrand() { return outrand; }
+	 */
 
 	public Privilege getPrivilege() {
 		return privilege;
@@ -1074,7 +1091,7 @@ public class Player extends Entity {
 	}
 
 	public void precycle() {
-		
+
 	}
 
 	public boolean drainSpecialEnergy(int amount) {
@@ -1119,6 +1136,33 @@ public class Player extends Entity {
 			}
 		}
 	}
+
+	public void queue(MessageBuilder msg) {
+		try {
+			if (!channel.isOpen())
+				return;
+			channel.writeAndFlush(msg);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			channel.close();
+		}
+	}
+	
+    /**
+     * Handles all of the queued messages from the {@link MessageDecoder} by
+     * polling the internal queue.
+     */
+    public void handleQueuedMessages() {
+        InputMessage msg;
+        while ((msg = messageQueue.poll()) != null) {
+            try {
+                InputMessageListener listener = NetworkConstants.MESSAGES[msg.getOpcode()];
+                listener.handleMessage(this, msg.getOpcode(), msg.getSize(), msg.getPayload());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 	public boolean inCombat() {
 		return timers.has(TimerKey.IN_COMBAT);

@@ -1,19 +1,19 @@
 {
-  "username": "yolo",
-  "displayName": "yolo",
+  "username": "test2",
+  "displayName": "test2",
   "ip": "127.0.0.1",
   "password": "test",
   "receivedStarter": false,
   "tile": {
-    "x": 3097,
-    "z": 3499,
+    "x": 3099,
+    "z": 3495,
     "level": 0
   },
   "playTime": {
     "hours": 0,
     "minutes": 0,
-    "seconds": 8,
-    "milliseconds": 400,
+    "seconds": 3,
+    "milliseconds": 0,
     "color": "\u003ccol\u003dffffff\u003e"
   },
   "migration": 0,

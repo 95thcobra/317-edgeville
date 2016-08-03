@@ -7,6 +7,7 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import edgeville.Constants;
 import edgeville.io.RSBuffer;
 import edgeville.model.entity.Player;
 import edgeville.net.ServerHandler;
@@ -20,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author Simon on 8/23/2014.
+ * @author Simon
  *
  */
 public class ActionDecoder extends ByteToMessageDecoder {
@@ -37,13 +38,16 @@ public class ActionDecoder extends ByteToMessageDecoder {
 	private int size;
 
 	public ActionDecoder() {
-		/* Fill repo, maybe through xml/json? */
-		actionRepository[33] = MakeOverDecoder.class;
+
+		int[] movementQueueOpcodes = {248, 164, 98};
+		for(int opcode : movementQueueOpcodes)
+			//actionRepository[opcode] = WalkMap.class;
+			actionRepository[opcode] = Movement.class;
+		
+		/*actionRepository[33] = MakeOverDecoder.class;
 		actionRepository[40] = SpellOnNpc.class;
 		actionRepository[50] = ItemDragBank.class;
 		actionRepository[13] = JoinClanChatDialog.class;
-		//actionRepository[76] = NpcAction2.class;//TODO
-		
 		actionRepository[202] = WalkMap.class;
 		actionRepository[70] = WalkMap.class;
 		actionRepository[210] = PublicChat.class;
@@ -67,27 +71,21 @@ public class ActionDecoder extends ByteToMessageDecoder {
 		actionRepository[185] = ObjectAction1.class;
 		actionRepository[6] = ObjectAction2.class;
 		actionRepository[84] = CloseMainInterface.class;
-
-		actionRepository[189] = NpcAction1.class; // firstoption
-		actionRepository[254] = NpcAttack.class; // attack
-
+		actionRepository[189] = NpcAction1.class;
+		actionRepository[254] = NpcAttack.class;
 		actionRepository[228] = IntegerInput.class;
-		actionRepository[227] = StringInput.class;
-		//actionRepository[115] = PingServer.class;
-		//actionRepository[117] = MoveMouse.class;
-		//actionRepository[129] = ChangeDisplayMode.class;
-
-		Arrays.stream(ButtonAction.OPCODES).forEach(i -> actionRepository[i] = ButtonAction.class);
+		actionRepository[227] = StringInput.class;*/
+//Arrays.stream(ButtonAction.OPCODES).forEach(i -> actionRepository[i] = ButtonAction.class); // assign all button repos
 
 		// Ignore a few classes
-		ignored.put(25, 0);
+		/*ignored.put(25, 0);
 		ignored.put(69, 0);
 		ignored.put(46, -1);
 		ignored.put(112, 6); // Mouse click
 		ignored.put(148, -2); // Key history
 		ignored.put(101, 4); // Key
 		ignored.put(58, 0);
-		ignored.put(59, -1);
+		ignored.put(59, -1);*/
 
 		/* Load sizes */
 		for (int i=0; i<256; i++) {
@@ -114,10 +112,16 @@ public class ActionDecoder extends ByteToMessageDecoder {
 		RSBuffer buffer = new RSBuffer(in);
 
 		switch (state) {
+		
 			case OPCODE:
 				if (in.readableBytes() < 1)
 					return;
-				opcode = buffer.readByte() /*- player.inrand().nextInt()*/ & 0xFF;
+
+				int key = player.getDecryptor().getKey();
+				opcode = buffer.get().readUnsignedByte(); // doesnt work?		
+				opcode = (opcode/* - key*/) & 0xFF;			
+				//size = Constants.PACKET_SIZES[opcode];
+				
 				state = State.SIZE;
 				in.markReaderIndex();
 
@@ -128,6 +132,7 @@ public class ActionDecoder extends ByteToMessageDecoder {
 					size = in.readableBytes();
 				} else {
 					int required = ignored.containsKey(opcode) ? ignored.get(opcode) : actionSizes[opcode];
+					//int required = Constants.PACKET_SIZES[opcode];
 
 					if (required == -1) {
 						if (in.readableBytes() < 1) {

@@ -1,0 +1,10 @@
+[
+  {
+    "opcodes": [
+      248,
+      164,
+      98
+    ],
+    "class": "edgeville.net.message.game.decoders.MovementQueueMessage"
+  }
+]
